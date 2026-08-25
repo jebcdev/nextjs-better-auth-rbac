@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+model User {
+  id            String    @id @map("id")
+  name          String    @map("name")
+  email         String    @map("email")
+  emailVerified Boolean   @default(false) @map("email_verified")
+  image         String?   @map("image")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  role          String?   @default("USER") @map("role")
+  banned        Boolean?  @default(false) @map("banned")
+  banReason     String?   @map("ban_reason")
+  banExpires    DateTime? @map("ban_expires")
+  isActive      Boolean?  @default(true) @map("is_active")
+  tenantId      String?   @map("tenant_id")
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("users")
+}
+
+model Session {
+  id             String   @id @map("id")
+  expiresAt      DateTime @map("expires_at")
+  token          String   @map("token")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  ipAddress      String?  @map("ip_address")
+  userAgent      String?  @map("user_agent")
+  userId         String   @map("user_id")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?  @map("impersonated_by")
+
+  @@unique([token])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @map("id")
+  issuer                String    @map("issuer")
+  accountId             String    @map("account_id")
+  providerId            String    @map("provider_id")
+  userId                String    @map("user_id")
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @map("access_token")
+  refreshToken          String?   @map("refresh_token")
+  idToken               String?   @map("id_token")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at")
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at")
+  scope                 String?   @map("scope")
+  password              String?   @map("password")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@unique([issuer, accountId], map: "account_issuer_account_id_uidx")
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @map("id")
+  identifier String   @map("identifier")
+  value      String   @map("value")
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([identifier])
+  @@map("verifications")
+}

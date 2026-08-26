@@ -4,12 +4,15 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { features } from "./super-admin-users-table-features";
 import { Badge } from "@/features/shared/components/ui/badge";
 import { TableActions } from "./";
+import {  getRoleLabel } from "@/lib/utils/enums-labels";
+import { Role } from "@/generated/prisma/enums";
+
 
 interface UserRow {
     id: string;
     email: string;
     name: string;
-    role: string;
+    role: Role;
     banned: boolean | null;
     isActive: boolean | null;
     createdAt: string;
@@ -41,12 +44,12 @@ export const columns = columnHelper.columns([
         cell: ({ row }) => (
             <Badge
                 variant={
-                    row.original.role === "SUPER_ADMIN"
+                    row.original.role === Role.SUPER_ADMIN
                         ? "destructive"
                         : "secondary"
                 }
             >
-                {row.original.role}
+                {getRoleLabel(row.original.role)}
             </Badge>
         ),
     },

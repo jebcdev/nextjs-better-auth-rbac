@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Noto_Sans, EB_Garamond } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TanStackQueryProvider } from "@/features/shared/components";
@@ -11,6 +11,10 @@ import {
     generateAsyncTitle,
 } from "@/lib/seo";
 import { getSessionDetails } from "@/lib/auth/session-details";
+
+const ebGaramondHeading = EB_Garamond({subsets:['latin'],variable:'--font-heading'});
+
+const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'});
 
 const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
@@ -38,13 +42,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <html
             lang="en"
             className={cn(
-                "h-full",
-                "antialiased",
-                geistSans.variable,
-                geistMono.variable,
-                "font-mono",
-                jetbrainsMono.variable,
-            )}
+                        "h-full",
+                        "antialiased",
+                        geistSans.variable,
+                        geistMono.variable,
+                        jetbrainsMono.variable,
+                     "font-sans", notoSans.variable, ebGaramondHeading.variable)}
         >
             <body className="min-h-full flex flex-col dark">
                 <TanStackQueryProvider>

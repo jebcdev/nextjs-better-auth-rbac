@@ -4,7 +4,7 @@ import { Role } from "@/generated/prisma/enums";
 
 const ROLE_LABELS: Record<Role, string> = {
     [Role.SUPER_ADMIN]: "Super Admin",
-    [Role.ADMIN]: "Institución",
+    [Role.ADMIN]: "Administrador",
     [Role.USER]: "Usuario",
     
 };

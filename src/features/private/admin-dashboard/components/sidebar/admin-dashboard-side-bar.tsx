@@ -49,31 +49,10 @@ const sidebarItems: SidebarItem[] = [
     {
         icon: Users,
         label: "Usuarios",
-        path: "/admin-dashboard/users",
+        path: "/panel-administracion/usuarios",
         superAdminOnly: true,
     },
-    {
-        icon: Globe2, // Asegúrate de importar los iconos
-        label: "Ubicaciones",
-        path: "/admin-dashboard/ubicaciones/",
-        subItems: [
-            {
-                icon: Globe2,
-                label: "Países",
-                path: "/admin-dashboard/ubicaciones/paises",
-            },
-            {
-                icon: MapPin,
-                label: "Departamentos",
-                path: "/admin-dashboard/ubicaciones/departamentos",
-            },
-            {
-                icon: Building2,
-                label: "Ciudades",
-                path: "/admin-dashboard/ubicaciones/ciudades",
-            },
-        ],
-    },
+    
 ];
 
 interface Props {
@@ -105,7 +84,7 @@ function SidebarContent({
             <div className="flex items-center justify-between gap-2 border-b border-sidebar-border">
                 {!isCollapsed && (
                     <Link
-                        href="/admin-dashboard"
+                        href="/panel-administracion/"
                         onClick={onNavigate}
                         className="flex items-center gap-2 truncate text-sm font-medium hover:opacity-80"
                     >
@@ -115,7 +94,7 @@ function SidebarContent({
                 )}
                 {isCollapsed && (
                     <Link
-                        href="/admin-dashboard"
+                        href="/panel-administracion/"
                         onClick={onNavigate}
                         className="flex items-center justify-center"
                     >

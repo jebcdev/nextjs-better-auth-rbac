@@ -23,7 +23,7 @@ export default function HomePage() {
                 </div>
                 <nav>
                     <a 
-                        href="/login" 
+                        href="/inicio" 
                         className="text-sm bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg transition-colors border border-slate-700"
                     >
                         Iniciar Sesión
@@ -44,7 +44,7 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                     <a 
-                        href="/dashboard" 
+                        href="/panel-administracion" 
                         className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-950"
                     >
                         Ir al Dashboard

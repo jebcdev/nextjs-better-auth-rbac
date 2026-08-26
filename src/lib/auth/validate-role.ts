@@ -8,7 +8,7 @@ export async function validateSuperAdmin() {
     const session = await getSessionDetails();
 
     if (!session.isAuthenticated) {
-        redirect("/login");
+        redirect("/inicio");
     }
     // console.clear();
     // consoleLogger({ isSuperAdmin: session.isSuperAdmin });
@@ -23,7 +23,7 @@ export async function validateAdminOrSuperAdmin() {
     const session = await getSessionDetails();
 
     if (!session.isAuthenticated) {
-        redirect("/login");
+        redirect("/inicio");
     }
 
     if (!session.isAdmin && !session.isSuperAdmin) {

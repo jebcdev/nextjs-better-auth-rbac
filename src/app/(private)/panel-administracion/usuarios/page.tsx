@@ -23,7 +23,7 @@ export default async function UsersPage() {
                 title="Gestión de Usuarios"
                 subtitle="Gestiona los Usuarios del Sistema"
                 action={{
-                    path: "/admin-dashboard/users/new",
+                    path: "/panel-administracion/usuarios/nuevo",
                     icon: <UserPlus/>,
                     label: "Nuevo usuario",
                 }}

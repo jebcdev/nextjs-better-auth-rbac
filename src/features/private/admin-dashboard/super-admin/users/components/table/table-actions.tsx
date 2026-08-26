@@ -33,7 +33,7 @@ export function TableActions({ user }: TableActionsProps) {
                 variant="ghost"
                 size="icon-xs"
                 onClick={() =>
-                    router.push(`/admin-dashboard/users/${user.id}`)
+                    router.push(`/panel-administracion/usuarios/${user.id}`)
                 }
                 title="Ver detalle"
             >
@@ -43,7 +43,7 @@ export function TableActions({ user }: TableActionsProps) {
                 variant="ghost"
                 size="icon-xs"
                 onClick={() =>
-                    router.push(`/admin-dashboard/users/${user.id}`)
+                    router.push(`/panel-administracion/usuarios/${user.id}`)
                 }
                 title="Editar"
             >

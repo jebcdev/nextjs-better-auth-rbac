@@ -4,11 +4,13 @@ import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
 import { getSessionDetails } from "@/lib/auth/session-details";
 import type { IGeneralResponse } from "@/features/shared/types/";
+import { consoleLogger } from "@/lib/logger/console-logger";
 
 export async function getSuperAdminGetUserByIdAction(
     userId: string,
 ): Promise<IGeneralResponse<unknown>> {
     try {
+       
         const session = await getSessionDetails();
 
         if (!session.isSuperAdmin) {
@@ -19,14 +21,17 @@ export async function getSuperAdminGetUserByIdAction(
             };
         }
 
-        const result = await auth.api.listUsers({
+
+        const result = await auth.api.getUser({
             headers: await headers(),
-            query: {},
+            query: { id: userId },
         });
 
-        const user = (result.users as Array<{ id: string }>)?.find((u) => u.id === userId);
+     
 
-        if (!user) {
+        
+
+        if (!result) {
             return {
                 success: false,
                 error: true,
@@ -38,9 +43,15 @@ export async function getSuperAdminGetUserByIdAction(
             success: true,
             error: false,
             message: "Usuario obtenido correctamente",
-            data: user,
+            data: result,
         };
     } catch (error) {
+        consoleLogger(
+            "****************************************",
+            "Error en getSuperAdminGetUserByIdAction",
+            "****************************************",
+            error,
+        );
         return {
             success: false,
             error: true,

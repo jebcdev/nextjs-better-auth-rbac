@@ -23,7 +23,7 @@ export default async function NewUserPage() {
                 title="Creación de Usuarios"
                 subtitle="Crea un Nuevo Usuario"
                 action={{
-                    path: "/admin-dashboard/users/",
+                    path: "/panel-administracion/usuarios",
                     icon: <ArrowLeft/>,
                     label: "Volver",
                 }}

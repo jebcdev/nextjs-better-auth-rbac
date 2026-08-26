@@ -94,9 +94,9 @@ function EmailSection({ userEmail }: { userEmail: string }) {
                 />
                 <SingleFormError message={errors.email?.message} />
             </div>
-            <Button type="submit" disabled={isPending}>
+            {/* <Button type="submit" disabled={isPending}>
                 {isPending ? "Guardando..." : "Guardar correo"}
-            </Button>
+            </Button> */}
         </form>
     );
 }

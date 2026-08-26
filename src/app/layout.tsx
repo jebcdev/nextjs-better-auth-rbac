@@ -3,13 +3,14 @@ import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TanStackQueryProvider } from "@/features/shared/components";
-import {Toaster } from "@/features/shared/components/ui";
+import {GeneralHeader, Toaster } from "@/features/shared/components/ui";
 
 
 import {
     generateAsyncDescription,
     generateAsyncTitle,
 } from "@/lib/seo";
+import { getSessionDetails } from "@/lib/auth/session-details";
 
 const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
@@ -30,7 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+        const { currentUser, isAdmin, isSuperAdmin } =
+        await getSessionDetails();
     return (
         <html
             lang="en"
@@ -43,8 +46,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 jetbrainsMono.variable,
             )}
         >
-            <body className="min-h-full flex flex-col">
+            <body className="min-h-full flex flex-col dark">
                 <TanStackQueryProvider>
+                                        <GeneralHeader currentUser={currentUser} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />
+
                     <Toaster
                         duration={3000}
                         position="top-right"

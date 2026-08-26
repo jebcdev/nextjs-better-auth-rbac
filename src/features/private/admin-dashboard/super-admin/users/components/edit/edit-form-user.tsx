@@ -37,7 +37,6 @@ const roleLabels: Record<Role, string> = {
     [Role.ADMIN]: "Administrador",
     [Role.USER]: "Usuario",
     //[Role.TECHNICIAN]: "Técnico",
-    
 };
 
 interface EditUserFormProps {
@@ -97,7 +96,7 @@ export function EditUserForm({ userId }: EditUserFormProps) {
                     setServerError(response.message);
                     return;
                 }
-                router.push("/admin-dashboard/users");
+                router.push("/panel-administracion/usuarios");
             },
             onError: () => {
                 setServerError("Error inesperado. Intenta de nuevo.");
@@ -142,7 +141,9 @@ export function EditUserForm({ userId }: EditUserFormProps) {
                         variant="outline"
                         className="mt-4"
                         onClick={() =>
-                            router.push("/admin-dashboard/users")
+                            router.push(
+                                "/panel-administracion/usuarios",
+                            )
                         }
                     >
                         Volver a usuarios
@@ -283,7 +284,9 @@ export function EditUserForm({ userId }: EditUserFormProps) {
                             type="button"
                             variant="ghost"
                             onClick={() =>
-                                router.push("/admin-dashboard/users")
+                                router.push(
+                                    "/panel-administracion/usuarios",
+                                )
                             }
                         >
                             Cancelar

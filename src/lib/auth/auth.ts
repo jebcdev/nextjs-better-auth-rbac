@@ -1,18 +1,48 @@
 import { betterAuth, User } from "better-auth";
 import { admin } from "better-auth/plugins";
+import { createAccessControl } from "better-auth/plugins/access";
+import { defaultStatements } from "better-auth/plugins/admin/access";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { nextCookies } from "better-auth/next-js";
 import { Role } from "@/generated/prisma/client";
+
 const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = new PrismaPg({ connectionString });
 const prismaDB = new PrismaClient({ adapter });
 
+// 1. Statement: reutiliza los permisos default de "user" y "session"
+const statement = {
+    ...defaultStatements,
+} as const;
+
+const ac = createAccessControl(statement);
+
+// 2. Roles: define qué puede hacer cada uno
+const userRole = ac.newRole({
+    user: [],
+});
+
+const adminRole = ac.newRole({
+    user: [
+        "list", "get", "create", "update", "delete",
+        "set-role", "ban", "set-password", "set-email",
+    ],
+    session: ["list", "revoke", "delete"],
+});
+
+const superAdminRole = ac.newRole({
+    user: [
+        "list", "get", "create", "update", "delete",
+        "set-role", "ban", "set-password", "set-email",
+        "impersonate", "impersonate-admins",
+    ],
+    session: ["list", "revoke", "delete"],
+});
+
 const auth = betterAuth({
-    database: prismaAdapter(prismaDB, {
-        provider: "postgresql",
-    }),
+    database: prismaAdapter(prismaDB, { provider: "postgresql" }),
 
     emailAndPassword: {
         enabled: true,
@@ -26,7 +56,7 @@ const auth = betterAuth({
                 type: "string",
                 required: false,
                 defaultValue: Role.USER,
-                input: false, // No permitir que el cliente lo setee directamente
+                input: false,
             },
             isActive: {
                 type: "boolean",
@@ -38,7 +68,7 @@ const auth = betterAuth({
                 type: "string",
                 required: false,
                 defaultValue: null,
-                input: true, // Permitir asignarlo al registrar
+                input: true,
             },
         },
     },
@@ -50,7 +80,7 @@ const auth = betterAuth({
                     return {
                         data: {
                             ...user,
-                            role: Role.USER,     // Siempre forzar rol por defecto
+                            role: Role.USER,
                             isActive: true,
                         },
                     };
@@ -62,11 +92,16 @@ const auth = betterAuth({
     plugins: [
         admin({
             defaultRole: Role.USER,
-            // Roles que tienen acceso al panel de admin
-            adminUserRoles: ["SUPER_ADMIN", "ADMIN"],
+            ac,
+            roles: {
+                [Role.USER]: userRole,
+                [Role.ADMIN]: adminRole,
+                [Role.SUPER_ADMIN]: superAdminRole,
+            },
+            adminRoles: [Role.ADMIN, Role.SUPER_ADMIN],
         }),
         nextCookies(),
     ],
 });
 
-export { auth,type User };
+export { auth, type User };

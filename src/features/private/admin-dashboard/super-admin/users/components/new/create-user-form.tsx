@@ -72,7 +72,8 @@ export function CreateUserForm() {
                     setServerError(response.message);
                     return;
                 }
-                router.push("/admin-dashboard/users");
+                
+                router.push("/panel-administracion/usuarios")
             },
             onError: () => {
                 setServerError("Error inesperado. Intenta de nuevo.");
@@ -191,7 +192,7 @@ export function CreateUserForm() {
                             type="button"
                             variant="ghost"
                             onClick={() =>
-                                router.push("/admin-dashboard/users")
+                                router.push("/panel-administracion/usuarios")
                             }
                         >
                             Cancelar

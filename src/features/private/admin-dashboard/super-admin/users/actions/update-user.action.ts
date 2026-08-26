@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { getSessionDetails } from "@/lib/auth/session-details";
 import { updateUserSchema, type UpdateUserInput } from "../validations";
 import type { IGeneralResponse } from "@/features/shared/types/";
+import { consoleLogger } from "@/lib/logger/console-logger";
 
 export async function updateUserAction(
     data: UpdateUserInput,
@@ -42,6 +43,7 @@ export async function updateUserAction(
             };
         }
 
+        // 1. Datos generales (nombre, email, rol) — SIN password
         const updateData: Record<string, unknown> = {
             name: parsed.data.name,
             email: parsed.data.email,
@@ -49,10 +51,6 @@ export async function updateUserAction(
 
         if (parsed.data.role) {
             updateData.role = parsed.data.role;
-        }
-
-        if (parsed.data.password && parsed.data.password.length >= 8) {
-            updateData.password = parsed.data.password;
         }
 
         await auth.api.adminUpdateUser({
@@ -63,6 +61,17 @@ export async function updateUserAction(
             headers: await headers(),
         });
 
+        // 2. Password, aparte, solo si viene y cumple longitud mínima
+        if (parsed.data.password && parsed.data.password.length >= 8) {
+            await auth.api.setUserPassword({
+                body: {
+                    userId: parsed.data.userId,
+                    newPassword: parsed.data.password,
+                },
+                headers: await headers(),
+            });
+        }
+
         return {
             success: true,
             error: false,
@@ -70,6 +79,7 @@ export async function updateUserAction(
             data: null,
         };
     } catch (error) {
+        consoleLogger("updateUserAction", "error", error);
         return {
             success: false,
             error: true,

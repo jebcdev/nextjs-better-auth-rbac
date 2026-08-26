@@ -35,7 +35,26 @@ export {
     DialogTitle,
     DialogTrigger,
 } from "./dialog";
+export {
+    DropdownMenu,
+    DropdownMenuPortal,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuLabel,
+    DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    DropdownMenuSubContent,
+} from "./dropdown-menu";
 export { SingleFormError } from "./form-error";
+export { GeneralHeader } from "./general-header";
+export type { HeaderNavOption } from "./general-header";
 export { Input } from "./input";
 export { Label } from "./label";
 export { NoData } from "./no-data";

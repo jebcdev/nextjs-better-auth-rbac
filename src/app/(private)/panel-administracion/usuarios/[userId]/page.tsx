@@ -29,7 +29,7 @@ export default async function EditUserPage({ params }: PageProps) {
                 title="Edición de Usuarios"
                 subtitle="Gestiona los datos del usuario"
                 action={{
-                    path: "/admin-dashboard/users/",
+                    path: "/panel-administracion/usuarios/",
                     icon: <ArrowLeft />,
                     label: "Volver",
                 }}

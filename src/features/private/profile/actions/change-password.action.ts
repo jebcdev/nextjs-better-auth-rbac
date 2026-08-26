@@ -26,7 +26,7 @@ export async function changePasswordAction(
             body: {
                 currentPassword: parsed.data.currentPassword,
                 newPassword: parsed.data.newPassword,
-                revokeOtherSessions: true,
+                // revokeOtherSessions: true,
             },
             headers: await headers(),
         });
